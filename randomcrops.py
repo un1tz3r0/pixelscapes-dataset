@@ -55,7 +55,7 @@ def weightedchoice(keyweights):
 				return key
 		return None
 
-def randomcrops(indir, outdir, outcount, outsize):
+def randomcrops(indir, outdir, outcount, outsize, statusinterval=100):
 		''' prepare a dataset for stylegan training from source images
 
 			@param indir		the directory containing the source images
@@ -119,10 +119,10 @@ def randomcrops(indir, outdir, outcount, outsize):
 				outim = sourceim.crop((sourcex, sourcey, sourcex+outsize, sourcey+outsize))
 				outpath = Path(outdir) / f"{outnum:06d}.png"
 				outim.save(str(outpath))
-				if (outnum//50)*50 == outnum:
+				if (outnum//statusinterval)*statusinterval == outnum:
 					print(f"\rSaved crop {outnum}/{outcount} at {sourcex}x{sourcey} from {sourceimfile} to {str(outpath)}\x1b[K", end="")
 		print("Done!")
 
 if __name__ == "__main__":
-	randomcrops("pixelscapes", "pixelscapes-256-weighted-100k", 100000, 256)
+	randomcrops("pixelscapes", "pixelscapes-256-weighted-50k", 50000, 256, statusinterval=100)
 
