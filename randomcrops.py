@@ -56,6 +56,21 @@ def weightedchoice(keyweights):
 		return None
 
 def randomcrops(indir, outdir, outcount, outsize):
+		''' prepare a dataset for stylegan training from source images
+
+			@param indir		the directory containing the source images
+			@param outdir		the directory in which to save the numbered output images, will be created if it does not exist
+			@param outcount	the number of output images to generate e.g. 50000
+			@param outsize	the dimension of the square output images e.g. 256 for 256x256
+
+		generates @param outcount randomly selected @param outsize x @param outsize crops of the images in @param indir.
+		the images are weighted based on area (vertical resolution x horizontal resolution) and then cropped at random
+		x,y offsets to ensure that all pixels of the input are represented evenly in the generated dataset. (@todo does
+		this sample edge pixels fairly? i suspect not... hrmm.) (@todo also, some filtering and rejection might be good,
+		for instance there are some images in the eboy.io pixelscapes database which have large regions of empty space
+		due to their isometric projection. rejecting crops which are all or mostly one color could improve results.)
+		'''
+		
 		from pathlib import Path
 		from PIL import Image
 		from random import randint, choice
@@ -96,5 +111,6 @@ def randomcrops(indir, outdir, outcount, outsize):
 				print(f"Saved crop {outnum}/{outcount} at {sourcex}x{sourcey} from {sourceimfile} to {str(outpath)}")
 		print("Done!")
 
-randomcrops("pixelscapes", "pixelscapes-256-weighted-100k", 100000, 256)
-	
+if __name__ == "__main__":
+	randomcrops("pixelscapes", "pixelscapes-256-weighted-100k", 100000, 256)
+
