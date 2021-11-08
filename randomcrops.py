@@ -76,11 +76,13 @@ def randomcrops(indir, outdir, outcount, outsize):
 		from random import randint, choice
 		from io import BytesIO
 		import math
+
+		# read in source images
 		sourceims = {}
 		sourceweights = {}
 		skipped = 0
 		total = 0
-		for infile in Path(indir).rglob("*"):
+		for infile in Path(indir).rglob("*.png"):
 				with open(str(infile), "rb") as infh:
 						data = infh.read()
 				sourceim = Image.open(BytesIO(data))
@@ -92,14 +94,23 @@ def randomcrops(indir, outdir, outcount, outsize):
 				sourceims[str(infile)]=fixrgb(sourceim)
 				sourceweights[str(infile)] = int(sourceim.width * sourceim.height)
 				#sourceweights[str(infile)] = int(math.sqrt((sourceim.width-outsize)**2 + (sourceim.height-outsize)**2))
+
+		# show summary of source images and weights
 		print()
 		print(f"Skipped {skipped} of {total} images... weights for images based on area:")
 		totalweight = sum(sourceweights.values())
 		for key, weight in sourceweights.items():
 			print(f"  {weight/totalweight*100.0: 3.2g} {key}")
 		print()
-		
-		print(f"Loaded {len(sourceims)} images...")
+
+		# create output directory if it does not exist
+		if not Path(outdir).exists():
+			print(f"Creating non-existant output directory: {outdir}")
+			Path(outdir).mkdir()
+			print()
+
+		# generate output images
+		print(f"Generating random crops...")
 		for outnum in range(0, outcount):
 				sourceimfile = weightedchoice(sourceweights)
 				sourceim = sourceims[sourceimfile]
@@ -108,7 +119,8 @@ def randomcrops(indir, outdir, outcount, outsize):
 				outim = sourceim.crop((sourcex, sourcey, sourcex+outsize, sourcey+outsize))
 				outpath = Path(outdir) / f"{outnum:06d}.png"
 				outim.save(str(outpath))
-				print(f"Saved crop {outnum}/{outcount} at {sourcex}x{sourcey} from {sourceimfile} to {str(outpath)}")
+				if (outnum//50)*50 == outnum:
+					print(f"\rSaved crop {outnum}/{outcount} at {sourcex}x{sourcey} from {sourceimfile} to {str(outpath)}\x1b[K", end="")
 		print("Done!")
 
 if __name__ == "__main__":
