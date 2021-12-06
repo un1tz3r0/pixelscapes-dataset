@@ -106,7 +106,7 @@ def randomcrops(indir, outdir, outcount, outsize, statusinterval=100):
 		# create output directory if it does not exist
 		if not Path(outdir).exists():
 			print(f"Creating non-existant output directory: {outdir}")
-			Path(outdir).mkdir()
+			Path(outdir).mkdir(parents=True, exist_ok=False)
 			print()
 
 		# generate output images
