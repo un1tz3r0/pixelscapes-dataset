@@ -124,5 +124,13 @@ def randomcrops(indir, outdir, outcount, outsize, statusinterval=100):
 		print("Done!")
 
 if __name__ == "__main__":
-	randomcrops("pixelscapes", "pixelscapes-256-weighted-50k", 50000, 256, statusinterval=100)
+	import argparse, os, pathlib, sys, re
+	parser = argparse.ArgumentParser(description="Generate randomly cropped squares from a set of source images for training GANs") 
+	parser.add_argument("sourcedir", type=str, help="The path to a directory containing the input images to crop")
+	parser.add_argument("destdir", type=str, help="The path to the output directory where the cropped images should be saved")
+	parser.add_argument("--size", type=int, default=256, help="The size (width and height) of the square region to crop and output from the source images")
+	parser.add_argument("--count", type=int, default=50000, help="The number of randomly cropped output images to generate from the source images")
+	parser.add_argument("--status-interval", type=int, default=100, help="Print a progress message to stderr after each chunk of this many output images are written")
+	args = parser.parse_args()
+	randomcrops(args.sourcedir, args.destdir, args.count, args.size, args.status_interval)
 
