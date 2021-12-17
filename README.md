@@ -1,8 +1,8 @@
 # pixelscapes-dataset
 
-Images scraped from [eboy.com](https://www.eboy.com/pool/~Pixorama/1?q=project) for training my own StyleGAN3 model, inspired by eBoyGAN project, for which the model seems to no longer be available :(.
+Images scraped from [eboy.com](https://www.eboy.com/pool/~Pixorama/1?q=project) for training [my own StyleGAN3](https://github.com/un1tz3r0/stylegan3.git) model, inspired by [eBoyGAN](https://braun.design/eBoyGAN) project, for which the model seems to no longer be available :(.
 
-Also includes a script randomcrops.py that generates random NxN cropped images fom the images in a source directory, choosing the source image randomly weighted by the relative pixel-area, so as to evenly sample all available pixels in the source directory
+Also includes a [script](./randomcrops.py) that generates random NxN cropped images fom the images in a source directory, choosing the source image randomly weighted by the relative pixel-area, so as to evenly sample all available pixels in the source directory
 
 
 TODO:
