@@ -7,5 +7,6 @@ Also includes a [script](./randomcrops.py) that generates random NxN cropped ima
 
 TODO:
 - Add color-metric wighting/targets so as to produce datasets with evenly distributed HSV histograms
-- Other weighting schemes/criteria for rejecting/choosing cropped images, including frequency distribution, largest connected component, maximum distance to morphological skeleton of certain colors (i.e. black line width), local neighborhood limits. 
-
+- Other weighting schemes/criteria for rejecting/choosing cropped images, including frequency distribution, largest connected component, maximum distance to morphological skeleton of certain colors (i.e. black line width), local neighborhood limits.
+- Multi-res/scaling, i.e. taking crops from upscaled 4x, upscaled 2x and original datasets. would be extra useful to have class labels associated with each scale too, so that training could include scale factor as a conditioning input (would require modifying the network architecture, but could be worthwhile)
+- Segmentation, depth and normal mapping, but pixel perfect. Possibly using the full eboy database (transparent .pngs of objects, buildings and people that these are mostly composed of). Maybe use pix2pix or a GAN for this.
